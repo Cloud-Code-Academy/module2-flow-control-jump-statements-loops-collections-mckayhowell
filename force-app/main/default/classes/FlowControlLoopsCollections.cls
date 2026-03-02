@@ -112,10 +112,8 @@ public with sharing class FlowControlLoopsCollections {
      * @return A string indicating whether the input is "Empty", "Null", or "Contains Text".
      */
     public static String checkString(String a) {
-        if (a == null) {
-            return 'Null';
-        } else if (a == '') {
-            return 'Empty';
+        if (String.isBlank(a)) {
+            return a == null ? 'Null' : 'Empty';
         } else {
             return 'Contains Text';
         }
@@ -269,14 +267,8 @@ public with sharing class FlowControlLoopsCollections {
      * @return A Set of unique strings.
      */
     public static Set<String> createStringSet(List<String> inputList) {
-        // Create a new Set of strings
-        Set<String> stringSet = new Set<String>();
-
-        //add strings to the set - sets cannot contain duplicate values so adding same values does not affect string
-        for (String input : inputList){
-            stringSet.add(input);
-        }
-
+        // Create a new Set of strings with values initialized from the inputList (deduplicated)
+        Set<String> stringSet = new Set<String>(inputList);
         return stringSet; // Replace null with the variable you used to store the result
     }
 
@@ -342,8 +334,9 @@ public with sharing class FlowControlLoopsCollections {
         final Decimal STOP_VALUE = 40.0;
         Decimal total = 0.0;
         for (Decimal money : moneyInWallet){
-            if(total <= STOP_VALUE){
-                total += money;
+            total += money;
+            if(total > STOP_VALUE){
+                break;
             }
         }
         return total; // Replace null with the variable you used to store the result
